@@ -1,10 +1,12 @@
 require 'date'
 require 'csv'
 
-data = IO.read('iBP_Readings.csv').split(/\n\n/m).first
+file = IO.read('iBP_Readings.csv').split(/\n\n/m).first
 
-CSV.open('data.csv', 'wb') do |csv|
-  CSV.parse(data, :headers => true) do |row|
+CSV.open('data.csv', 'wb',
+  :write_headers => true,
+  :headers => ['Date', 'Systolic', 'Diastolic', 'Pulse', 'Mean Arterial Pressure', 'Pulse Pressure']) do |csv|
+  CSV.parse(file, :headers => true) do |row|
     date =                   row['Date']
     date = DateTime.strptime(date, '%D %R%p').to_time.to_i unless date.eql? 'Date'
     systolic =               row['Systolic']
